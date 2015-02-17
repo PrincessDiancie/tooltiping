@@ -1,12 +1,77 @@
-*.class
+ function tooltip() {
+    var title = $(this).attr("title");
+    $(this).removeAttr("title");
+   
+    this.TooltipMessage = $("<div/>", {class: "tooltipMessage", style: "display: none;"});
+    this.TooltipMessage.html("<span>" + title + "</span>");
+    $("body").append(this.TooltipMessage);
+   
+ 
+    if ($(this).hasClass("tooltipLeft")) {
+        this.TooltipMessage.addClass("left");
+    }
+ 
+    $(this).hover(tooltipFadeIn, tooltipFadeOut);
+    $(this).mousemove(tooltipMousemove);
+}
+ 
+function tooltipFadeIn() {
+    this.TooltipMessage.stop(true, false).fadeIn();
+}
+ 
+function tooltipFadeOut() {
+    this.TooltipMessage.stop(true, false).fadeOut();
+}
+ 
+function tooltipMousemove(e) {
+    var offset = {
+        left: e.pageX,
+        top: e.pageY + 5
+    };
+ 
+    if (this.TooltipMessage.hasClass("left")) {
+        offset.left -= this.TooltipMessage.width() + 10;
+    } else {
+        offset.left -= 100;
+       
+    }
+    this.TooltipMessage.offset(offset);
+}
+ 
+$(function (e) {
+    $(".tooltip").each(tooltip);
+});
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+function killCopy(e){
+return false
+}
+function reEnable(){
+return true
+}
+document.onselectstart=new Function ("return false")
+if (window.sidebar) {
+document.onmousedown=killCopy
+document.onclick=reEnable
+}
+function nrcIE() {
+        if (document.all) {
+            return false;
+        }
+}
 
-# Package Files #
-*.jar
-*.war
-*.ear
+function nrcNS(e) {
+        if (document.layers || (document.getElementById && ! document.all)) {
+            if (e.which == 2 || e.which == 3) {
+                return false;
+            }
+        }
+}
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+if (document.layers) {
+    document.captureEvents(Event.MOUSEDOWN);
+    document.onmousedown = nrcNS;
+}else {
+    document.onmouseup = nrcNS;
+    document.oncontextmenu = nrcIE;
+}
+document.oncontextmenu = new Function("return false");
